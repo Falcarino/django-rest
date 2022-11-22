@@ -20,3 +20,27 @@ source ./venv/bin/activate.
 ```
 pip install -r ./requirements.txt
 ```
+
+## Migrations
+Creating a model in db and synching it for the first time
+```
+python manage.py makemigrations <model_folder>
+python manage.py migrate <model_folder>
+```
+
+## Json body for POST
+An example of a valid json body for a POST request looks like this:
+```
+{
+    "users":[
+        {
+        "first_name": "Mike",
+        "last_name": "Kedzierski"
+        },
+        {
+        "first_name": "Ayaan",
+        "last_name": "Badawi"
+        }
+    ]
+}
+```
