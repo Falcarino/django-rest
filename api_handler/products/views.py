@@ -3,9 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from rest_framework.exceptions import NotFound, ParseError
 
-from .models import User
-from .serializers import UserSerializer
-
+from .models import Product
+from .serializers import ProductSerializer
 
 class IDNotFound(NotFound):
     def __init__(self, id):
@@ -13,40 +12,38 @@ class IDNotFound(NotFound):
         super().__init__(message)
 
 # Perhaps make a generic view metaclass?
-class UsersView(APIView):
+class ProductsView(APIView):
 
-    def __get_users_queryset(self, ids):
-
-        # Check if any users even exist
+    def __get_products_queryset(self, ids):
         try:
             ids = ids.strip().split(',')
         except:
-            raise NotFound("No users found.")
+            raise NotFound("No products found.")
 
-        users_qs = User.objects.none() # Setting up an empty QuerySet()
+        products_qs = Product.objects.none()
         for id in ids:
-            user = User.objects.filter(user_id=id)
-            if user.exists():
-                users_qs = user | users_qs # If User exists, add to the QuerySet
+            product = Product.objects.filter(product_id=id)
+            if product.exists():
+                products_qs = product | products_qs
             else:
                 raise IDNotFound(id)
-        return users_qs
+        return products_qs
 
     def get(self, request, ids=None):
         if not ids:
-            users = User.objects.all()
+            products = Product.objects.all()
         if ids:
-            users = self.__get_users_queryset(ids)
+            products = self.__get_products_queryset(ids)
 
-        serializer = UserSerializer(users, many=True)
+        serializer = ProductSerializer(products, many=True)
         return JsonResponse(serializer.data, safe=False, status=200)
-    
+
     def post(self, request, ids=None):
         if not ids:
             new_data = JSONParser().parse(request)
             
-            for user in new_data['users']:
-                serializer = UserSerializer(data=user)
+            for product in new_data['products']:
+                serializer = ProductSerializer(data=product)
                 if serializer.is_valid():
                     serializer.save()
             return JsonResponse(new_data, status=201)
@@ -56,18 +53,16 @@ class UsersView(APIView):
         if not ids:
             raise NotFound('Cannot update None.')
         if ids:
-            # Since only one user object can be updated,
-            # we just need to try to convert it to 'int'
             try:
                 id = int(ids)
             except:
                 raise ParseError('Bad request. Only one user can be updated')
 
             try:
-                user = User.objects.get(user_id=id)
+                product = Product.objects.get(product_id=id)
 
                 new_data = JSONParser().parse(request)
-                serializer = UserSerializer(user, data=new_data)
+                serializer = ProductSerializer(product, data=new_data)
                 if serializer.is_valid():
                     serializer.save()
                     return JsonResponse(serializer.data, status=200)
@@ -77,10 +72,20 @@ class UsersView(APIView):
 
     def delete(self, request, ids=None):
         if not ids:
-            users = User.objects.all()
+            products = Product.objects.all()
         if ids:
-            users = self.__get_users_queryset(ids)
+            products = self.__get_products_queryset(ids)
 
-        serializer = UserSerializer(users, many=True)
-        users.delete()
+        serializer = ProductSerializer(products, many=True)
+        products.delete()
         return JsonResponse(serializer.data, safe=False, status=200)
+
+class UserProductsView(APIView):
+    
+    def get(self, request, user_id=None):
+        if not user_id:
+            raise ParseError('Bad request.') 
+        if user_id:
+            products = Product.objects.filter(user_id=user_id)
+            serializer = ProductSerializer(products, many=True)
+            return JsonResponse(serializer.data, safe=False, status=200)

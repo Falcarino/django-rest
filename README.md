@@ -24,8 +24,13 @@ pip install -r ./requirements.txt
 ## Migrations
 Creating a model in db and synching it for the first time
 ```
-python manage.py makemigrations <model_folder>
-python manage.py migrate <model_folder>
+python manage.py makemigrations <app_label>
+python manage.py migrate <app_label>
+```
+Example:
+```
+python manage.py makemigrations api_handler
+python manage.py migrate api_handler
 ```
 
 ## Json body for POST
