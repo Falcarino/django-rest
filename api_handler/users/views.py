@@ -44,7 +44,7 @@ class UsersView(APIView):
     def post(self, request, ids=None):
         if not ids:
             new_data = JSONParser().parse(request)
-            
+
             for user in new_data['users']:
                 serializer = UserSerializer(data=user)
                 if serializer.is_valid():
