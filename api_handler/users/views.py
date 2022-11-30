@@ -45,11 +45,13 @@ class UsersView(APIView):
         if not ids:
             parsed_data = JSONParser().parse(request)
             new_data = []
+
             for user in parsed_data['users']:
                 serializer = UserSerializer(data=user)
                 if serializer.is_valid():
                     serializer.save()
                     new_data.append(serializer.data)
+
             return JsonResponse(new_data, safe=False, status=201)
         raise ParseError('Bad request.')
 
@@ -66,9 +68,12 @@ class UsersView(APIView):
 
             try:
                 user = User.objects.get(user_id=id)
-
                 new_data = JSONParser().parse(request)
-                serializer = UserSerializer(user, data=new_data)
+
+                for field, value in new_data.items():
+                    setattr(user, field, value)
+
+                serializer = UserSerializer(user, data=new_data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
                     return JsonResponse(serializer.data, status=200)

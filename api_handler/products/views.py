@@ -59,10 +59,13 @@ class ProductsView(APIView):
                 raise ParseError('Bad request. Only one user can be updated')
 
             try:
-                product = Product.objects.get(product_id=id)
-
+                product = User.objects.get(product_id=id)
                 new_data = JSONParser().parse(request)
-                serializer = ProductSerializer(product, data=new_data)
+
+                for field, value in new_data.items():
+                    setattr(product, field, value)
+
+                serializer = ProductSerializer(product, data=new_data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
                     return JsonResponse(serializer.data, status=200)
