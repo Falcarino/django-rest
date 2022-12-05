@@ -1,8 +1,6 @@
 import pytest
 import json
 import factory
-from model_bakery import baker
-from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from django.urls import reverse
 
@@ -28,16 +26,17 @@ class TestUsersAPI(APITestCase):
       assert response.status_code == 200
       assert amount_of_users == 3
 
-   # Test GET to get any one user.
-   def test_user_get_several(self):
+   # Test GET to get one or several user.
+   def test_users_get_several(self):
       url = reverse('users', kwargs={'ids': '1,3'})
       response = self.client.get(url)
-      print(json.loads(response.content))
+      amount_of_users = len(json.loads(response.content))
 
       assert response.status_code == 200
+      assert amount_of_users == 2
 
    # Test POST. After creating a new user, 'user_id' should increment by 1.
-   def test_user_post(self):
+   def test_users_post(self):
       url = reverse('all_users')
       users_before_post = len(json.loads(self.client.get(url).content))
 
@@ -58,7 +57,7 @@ class TestUsersAPI(APITestCase):
       assert json.loads(response.content)[0]['user_id'] == users_before_post + 1
 
    # Test PUT. Should successfully update 'first_name'.
-   def test_user_put(self):
+   def test_users_put(self):
       new_name = 'Lain'
       url = reverse('users', kwargs={'ids': '2'})
 
@@ -73,7 +72,7 @@ class TestUsersAPI(APITestCase):
       assert json.loads(response.content)['first_name'] == new_name
 
    # Test DELETE on one or several ids. GETting respective ids should return 404.
-   def test_user_delete_several(self):
+   def test_users_delete_several(self):
       url = reverse('users', kwargs={'ids': '2,3'})
       response = self.client.delete(url)
       assert response.status_code == 200
@@ -93,7 +92,7 @@ class TestUsersAPI(APITestCase):
       assert amount_of_users == 1
 
    # Test DELETE on all users. GETting all users should return an empty array.
-   def test_user_delete_all(self):
+   def test_users_delete_all(self):
       url = reverse('all_users')
       response = self.client.delete(url)
       assert response.status_code == 200
