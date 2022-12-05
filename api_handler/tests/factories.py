@@ -22,7 +22,6 @@ class ProductFactory(factory.django.DjangoModelFactory):
     List of available topics can be found here:
     https://faker.readthedocs.io/en/master/providers.html
     """
-    user_id = factory.SubFactory(UserFactory)
     product_type = factory.faker.Faker('word')
     brand = factory.faker.Faker('word')
     model = factory.faker.Faker('license_plate')
