@@ -46,8 +46,8 @@ class UsersView(APIView):
             parsed_data = JSONParser().parse(request)
             new_data = []
 
-            for user in parsed_data['users']:
-                serializer = UserSerializer(data=user)
+            for user_data in parsed_data['users']:
+                serializer = UserSerializer(data=user_data)
                 if serializer.is_valid():
                     serializer.save()
                     new_data.append(serializer.data)

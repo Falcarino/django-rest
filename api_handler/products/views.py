@@ -40,13 +40,16 @@ class ProductsView(APIView):
 
     def post(self, request, ids=None):
         if not ids:
-            new_data = JSONParser().parse(request)
+            parsed_data = JSONParser().parse(request)
+            new_data = []
             
-            for product in new_data['products']:
+            for product in parsed_data['products']:
                 serializer = ProductSerializer(data=product)
                 if serializer.is_valid():
                     serializer.save()
-            return JsonResponse(new_data, status=201)
+                    new_data.append(serializer.data)
+
+            return JsonResponse(new_data, safe=False, status=201)
         raise ParseError('Bad request.')
 
     def put(self, request, ids=None):
@@ -59,7 +62,7 @@ class ProductsView(APIView):
                 raise ParseError('Bad request. Only one user can be updated')
 
             try:
-                product = User.objects.get(product_id=id)
+                product = Product.objects.get(product_id=id)
                 new_data = JSONParser().parse(request)
 
                 for field, value in new_data.items():
