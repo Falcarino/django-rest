@@ -17,15 +17,9 @@ class TestUsersAPI(APITestCase):
 
     # Objects created in setUp function will persist throughout the test class
     def setUp(self):
-        previous = None
-        for _ in range(3):
-            user = UserFactory.create()
-            if previous is None:
-                previous = user
-            else:
-                user = previous
-                previous = None
-            ProductFactory.create(user_id=user)
+        users = UserFactory.create_batch(2)
+        for i in range(3):
+            ProductFactory.create(user_id=users[i % 2])
 
     # Test GET to get all users. Pre-set amount of users is 3
     def test_products_get_all(self):
@@ -35,4 +29,4 @@ class TestUsersAPI(APITestCase):
 
         assert response.status_code == 200
         assert len(content) == 3
-        assert 2 not in [product_info['user_id'] for product_info in content]
+        assert [1, 2, 1] == [product_info['user_id'] for product_info in content]
