@@ -13,13 +13,13 @@ from .factories import ProductFactory, UserFactory
 
 class TestUsersAPI(APITestCase):
 
-   # Objects created in setUp function will persist throughout the test class
+   # Objects created in setUp() function will persist throughout the test class
    def setUp(self):
-        users = UserFactory.create_batch(3)
-        for i in range(4):
-            ProductFactory.create(user_id=users[i % 3])
+      users = UserFactory.create_batch(3)
+      for i in range(4):
+         ProductFactory.create(user_id=users[i % 3])
 
-    # Test GET to get all products. Pre-set amount of products is 4
+   # Test GET to get all products. Pre-set amount of products is 4
    def test_products_get_all(self):
         url = reverse('all_products')
         response = self.client.get(url)
