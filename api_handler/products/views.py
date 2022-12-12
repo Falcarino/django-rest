@@ -1,4 +1,5 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
+from django.db.models.query import QuerySet
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from rest_framework.exceptions import NotFound, ParseError
@@ -14,7 +15,7 @@ class IDNotFound(NotFound):
 # Perhaps make a generic view metaclass?
 class ProductsView(APIView):
 
-    def __get_products_queryset(self, ids):
+    def __get_products_queryset(self, ids: str) -> QuerySet:
         """
         Collects all existing product ids provided in a request.
         If at least one provided id doesn't exists, returns error 404.
@@ -44,7 +45,7 @@ class ProductsView(APIView):
                 raise IDNotFound(id)
         return products_qs
 
-    def get(self, request, ids=None):
+    def get(self, request: HttpRequest, ids=None) -> dict:
         """
         GETs several or all products, depending on whether any ids were provided or not.
 
@@ -65,7 +66,7 @@ class ProductsView(APIView):
         serializer = ProductSerializer(products, many=True)
         return JsonResponse(serializer.data, safe=False, status=200)
 
-    def post(self, request, ids=None):
+    def post(self, request: HttpRequest, ids=None) -> dict:
         """
         POSTs one or several products.
 
@@ -93,7 +94,7 @@ class ProductsView(APIView):
             return JsonResponse(new_data, safe=False, status=201)
         raise ParseError('Bad request.')
 
-    def put(self, request, ids=None):
+    def put(self, request: HttpRequest, ids=None) -> dict:
         """
         PUTs a product.
 
@@ -131,7 +132,7 @@ class ProductsView(APIView):
                 raise IDNotFound(id)
         raise ParseError('Bad request.')
 
-    def delete(self, request, ids=None):
+    def delete(self, request: HttpRequest, ids=None) -> dict:
         """
         DELETEs several or all products.
 
@@ -155,7 +156,7 @@ class ProductsView(APIView):
 
 class UserProductsView(APIView):
     
-    def get(self, request, user_id=None):
+    def get(self, request: HttpRequest, user_id=None) -> dict:
         """
         GETs all products tied to a specific user.
 

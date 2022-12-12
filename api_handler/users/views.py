@@ -1,4 +1,5 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
+from django.db.models.query import QuerySet
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser
 from rest_framework.exceptions import NotFound, ParseError
@@ -15,7 +16,7 @@ class IDNotFound(NotFound):
 # Perhaps make a generic view metaclass?
 class UsersView(APIView):
 
-    def __get_users_queryset(self, ids):
+    def __get_users_queryset(self, ids: str) -> QuerySet:
         """
         Collects all existing user ids provided in a request.
         If at least one provided id doesn't exists, returns error 404.
@@ -47,7 +48,7 @@ class UsersView(APIView):
                 raise IDNotFound(id)
         return users_qs
 
-    def get(self, request, ids=None):
+    def get(self, request: HttpRequest, ids=None) -> dict:
         """
         GETs several or all users, depending on whether any ids were provided or not.
 
@@ -68,7 +69,7 @@ class UsersView(APIView):
         serializer = UserSerializer(users, many=True)
         return JsonResponse(serializer.data, safe=False, status=200)
     
-    def post(self, request, ids=None):
+    def post(self, request: HttpRequest, ids=None) -> dict:
         """
         POSTs one or several users.
 
@@ -96,7 +97,7 @@ class UsersView(APIView):
             return JsonResponse(new_data, safe=False, status=201)
         raise ParseError('Bad request.')
 
-    def put(self, request, ids=None):
+    def put(self, request: HttpRequest, ids=None) -> dict:
         """
         PUTs a user.
 
@@ -136,7 +137,7 @@ class UsersView(APIView):
                 raise IDNotFound(id)
         raise ParseError('Bad request.')
 
-    def delete(self, request, ids=None):
+    def delete(self, request: HttpRequest, ids=None) -> dict:
         """
         DELETEs several or all users.
 
