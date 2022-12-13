@@ -12,6 +12,7 @@ from .factories import ProductFactory, UserFactory
 # But apparently the suite will work without it???
 # pytestmark = pytest.mark.django_db
 
+
 class TestUsersAPI(APITestCase):
 
     # Objects created in setUp function will persist throughout the test class
