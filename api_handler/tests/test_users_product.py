@@ -8,7 +8,6 @@ from rest_framework.test import APIClient, APITestCase
 
 from .factories import ProductFactory, UserFactory
 
-
 # Automatically assigns @pytest.mark.django_db to every function
 # But apparently the suite will work without it???
 # pytestmark = pytest.mark.django_db
