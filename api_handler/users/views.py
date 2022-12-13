@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
@@ -21,7 +22,7 @@ class UsersView(APIView):
         # Check if any users even exist
         try:
             ids = ids.strip().split(',')
-        except:
+        except NotFound:
             raise NotFound("No users found.")
 
         users_qs = User.objects.none()  # Setting up an empty QuerySet()
@@ -64,7 +65,7 @@ class UsersView(APIView):
             # we just need to try to convert it to 'int'
             try:
                 id = int(ids)
-            except:
+            except ValueError:
                 raise ParseError('Bad request. Only one user can be updated')
 
             try:
@@ -78,7 +79,7 @@ class UsersView(APIView):
                 if serializer.is_valid():
                     serializer.save()
                     return JsonResponse(serializer.data, status=200)
-            except:
+            except ObjectDoesNotExist:
                 raise IDNotFound(id)
         raise ParseError('Bad request.')
 

@@ -1,7 +1,5 @@
 import json
 
-import factory
-import pytest
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
@@ -18,11 +16,12 @@ class TestUsersAPI(APITestCase):
     def setUp(self):
         UserFactory.create_batch(3)
 
-    # Test GET to get all users. Pre-set amount of users is 3
+    # Test GET to get all users. Pre-set amount of users is 3 + $DJANGO_SU_EMAIL
     def test_users_get_all(self):
         url = reverse('all_users')
         response = self.client.get(url)
         amount_of_users = len(json.loads(response.content))
+
         assert response.status_code == 200
         assert amount_of_users == 4
 
@@ -52,6 +51,7 @@ class TestUsersAPI(APITestCase):
             data=expected_json,
             format='json'
         )
+
         assert response.status_code == 201
         assert json.loads(response.content)[0]['user_id'] == users_before_post + 1
 

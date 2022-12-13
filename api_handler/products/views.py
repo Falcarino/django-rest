@@ -59,7 +59,7 @@ class ProductsView(APIView):
         if ids:
             try:
                 id = int(ids)
-            except:
+            except ValueError as e:
                 raise ParseError('Bad request. Only one user can be updated')
 
             try:
