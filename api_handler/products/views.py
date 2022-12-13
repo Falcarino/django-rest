@@ -1,15 +1,17 @@
 from django.http import JsonResponse
-from rest_framework.views import APIView
-from rest_framework.parsers import JSONParser
 from rest_framework.exceptions import NotFound, ParseError
+from rest_framework.parsers import JSONParser
+from rest_framework.views import APIView
 
 from .models import Product
 from .serializers import ProductSerializer
+
 
 class IDNotFound(NotFound):
     def __init__(self, id):
         message = f'ID {id} not found.'
         super().__init__(message)
+
 
 # Perhaps make a generic view metaclass?
 class ProductsView(APIView):
@@ -42,7 +44,6 @@ class ProductsView(APIView):
         if not ids:
             parsed_data = JSONParser().parse(request)
             new_data = []
-            
             for product in parsed_data['products']:
                 serializer = ProductSerializer(data=product)
                 if serializer.is_valid():
@@ -86,11 +87,12 @@ class ProductsView(APIView):
         products.delete()
         return JsonResponse(serializer.data, safe=False, status=200)
 
+
 class UserProductsView(APIView):
-    
+
     def get(self, request, user_id=None):
         if not user_id:
-            raise ParseError('Bad request.') 
+            raise ParseError('Bad request.')
         if user_id:
             products = Product.objects.filter(user_id=user_id)
             serializer = ProductSerializer(products, many=True)

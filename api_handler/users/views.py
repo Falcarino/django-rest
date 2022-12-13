@@ -1,7 +1,7 @@
 from django.http import JsonResponse
-from rest_framework.views import APIView
-from rest_framework.parsers import JSONParser
 from rest_framework.exceptions import NotFound, ParseError
+from rest_framework.parsers import JSONParser
+from rest_framework.views import APIView
 
 from .models import User
 from .serializers import UserSerializer
@@ -11,6 +11,7 @@ class IDNotFound(NotFound):
     def __init__(self, id):
         message = f'ID {id} not found.'
         super().__init__(message)
+
 
 # Perhaps make a generic view metaclass?
 class UsersView(APIView):
@@ -23,11 +24,11 @@ class UsersView(APIView):
         except:
             raise NotFound("No users found.")
 
-        users_qs = User.objects.none() # Setting up an empty QuerySet()
+        users_qs = User.objects.none()  # Setting up an empty QuerySet()
         for id in ids:
             user = User.objects.filter(user_id=id)
             if user.exists():
-                users_qs = user | users_qs # If User exists, add to the QuerySet
+                users_qs = user | users_qs  # If User exists, add to the QuerySet
             else:
                 raise IDNotFound(id)
         return users_qs
@@ -40,7 +41,7 @@ class UsersView(APIView):
 
         serializer = UserSerializer(users, many=True)
         return JsonResponse(serializer.data, safe=False, status=200)
-    
+
     def post(self, request, ids=None):
         if not ids:
             parsed_data = JSONParser().parse(request)

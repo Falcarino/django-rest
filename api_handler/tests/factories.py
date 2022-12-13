@@ -1,6 +1,8 @@
 import factory
-from api_handler.users.models import User
+
 from api_handler.products.models import Product
+from api_handler.users.models import User
+
 
 class UserFactory(factory.django.DjangoModelFactory):
     """
@@ -14,6 +16,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = User
+
 
 class ProductFactory(factory.django.DjangoModelFactory):
     """
