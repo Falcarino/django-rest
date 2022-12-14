@@ -1,7 +1,7 @@
 import factory
 
-from api_handler.products.models import Product
-from api_handler.users.models import User
+from products.models import Product
+from users.models import User
 
 
 class UserFactory(factory.django.DjangoModelFactory):
