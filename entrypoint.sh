@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$POSTGRES_DB" = "postgres" ]
+if [ "$POSTGRES_DB" = "api_db" ]
 then
     echo "Waiting for postgres..."
 

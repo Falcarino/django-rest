@@ -23,9 +23,8 @@ class TestUsersAPI(APITestCase):
 
     # Test GET to get all products of a certain user. Should return 2 different product items.
     def test_user_products_get(self):
-        url = reverse('user_products', kwargs={'user_id': 1})
+        url = reverse('user_products', kwargs={'user_id': 2})
         response = self.client.get(url)
         content = json.loads(response.content)
-
         assert response.status_code == 200
         assert len(content) == 2

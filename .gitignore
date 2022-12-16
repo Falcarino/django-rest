@@ -5,4 +5,4 @@ env
 venv
 talking-python-api-flowchart.drawio
 /api_handler/fixtures
-.pytest_cache
+/api_handler/.pytest_cache

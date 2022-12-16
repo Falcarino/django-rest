@@ -11,8 +11,8 @@ class UserFactory(factory.django.DjangoModelFactory):
     List of available topics can be found here:
     https://faker.readthedocs.io/en/master/providers.html
     """
-    first_name = factory.faker.Faker('first_name_nonbinary')
-    last_name = factory.faker.Faker('last_name')
+    email = factory.faker.Faker('email')
+    password = factory.faker.Faker('password')
 
     class Meta:
         model = User

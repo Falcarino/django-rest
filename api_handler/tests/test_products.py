@@ -27,7 +27,7 @@ class TestUsersAPI(APITestCase):
 
         assert response.status_code == 200
         assert len(content) == 4
-        assert [1, 2, 3, 1] == [product_info['user_id'] for product_info in content]
+        assert [2, 3, 4, 2] == [product_info['user_id'] for product_info in content]
 
     # Test GET to get one or several products.
     def test_products_get_several(self):
@@ -121,13 +121,9 @@ class TestUsersAPI(APITestCase):
 
     # Test DELETE on a user. Should lead to all products related to the user to be deleted as well.
     def test_products_delete_user(self):
-        url = reverse('users', kwargs={'ids': '1'})
+        url = reverse('users', kwargs={'ids': '2'})
         self.client.delete(url)
 
-        url = reverse('products', kwargs={'ids': '1'})
-        response = self.client.get(url)
-        assert response.status_code == 404
-
-        url = reverse('products', kwargs={'ids': '4'})
+        url = reverse('products', kwargs={'ids': '2,4'})
         response = self.client.get(url)
         assert response.status_code == 404

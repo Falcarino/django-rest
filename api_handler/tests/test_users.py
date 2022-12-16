@@ -23,9 +23,8 @@ class TestUsersAPI(APITestCase):
         url = reverse('all_users')
         response = self.client.get(url)
         amount_of_users = len(json.loads(response.content))
-
         assert response.status_code == 200
-        assert amount_of_users == 3
+        assert amount_of_users == 4
 
     # Test GET to get one or several user.
     def test_users_get_several(self):
@@ -43,8 +42,8 @@ class TestUsersAPI(APITestCase):
 
         expected_json = {
             "users": [{
-                "first_name": "Bane",
-                "last_name": "Row"
+                "email": "jajabinks@star.com",
+                "password": "12311asdacwee"
             }]
         }
 
@@ -53,16 +52,15 @@ class TestUsersAPI(APITestCase):
             data=expected_json,
             format='json'
         )
-
         assert response.status_code == 201
         assert json.loads(response.content)[0]['user_id'] == users_before_post + 1
 
     # Test PUT. Should successfully update 'first_name'.
     def test_users_put(self):
-        new_name = 'Lain'
+        new_email = "R2D2@milleniumfalcon.com"
         url = reverse('users', kwargs={'ids': '2'})
 
-        expected_json = {"first_name": new_name}
+        expected_json = {"email": "R2D2@milleniumfalcon.com"}
         response = self.client.put(
             url,
             data=expected_json,
@@ -70,7 +68,7 @@ class TestUsersAPI(APITestCase):
         )
 
         assert response.status_code == 200
-        assert json.loads(response.content)['first_name'] == new_name
+        assert json.loads(response.content)['email'] == new_email
 
     # Test DELETE on one or several ids. GETting respective ids should return 404.
     def test_users_delete_several(self):
@@ -90,7 +88,7 @@ class TestUsersAPI(APITestCase):
         url = reverse('all_users')
         response = self.client.get(url)
         amount_of_users = len(json.loads(response.content))
-        assert amount_of_users == 1
+        assert amount_of_users == 2
 
     # Test DELETE on all users. GETting all users should return an empty array.
     def test_users_delete_all(self):
