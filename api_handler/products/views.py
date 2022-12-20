@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
@@ -19,7 +20,7 @@ class ProductsView(APIView):
     def __get_products_queryset(self, ids):
         try:
             ids = ids.strip().split(',')
-        except:
+        except NotFound:
             raise NotFound("No products found.")
 
         products_qs = Product.objects.none()
@@ -59,7 +60,7 @@ class ProductsView(APIView):
         if ids:
             try:
                 id = int(ids)
-            except ValueError as e:
+            except ValueError:
                 raise ParseError('Bad request. Only one user can be updated')
 
             try:
@@ -73,7 +74,7 @@ class ProductsView(APIView):
                 if serializer.is_valid():
                     serializer.save()
                     return JsonResponse(serializer.data, status=200)
-            except:
+            except ObjectDoesNotExist:
                 raise IDNotFound(id)
         raise ParseError('Bad request.')
 
