@@ -2,10 +2,6 @@
 
 {% block content %}
 
-  {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
-
   {% if next %}
     {% if user.is_authenticated %}
       <p>Your account doesn't have access to this page. To proceed,
@@ -30,6 +26,6 @@
     <input type="submit" value="log in">
     <input type="hidden" name="next" value="{{ next }}">
   </form>
-  <p>{{ msg }}</p>
+  <p>If you don't have a user account <a href="{% url 'register' %}">click here</a> to register</p>
 
 {% endblock %}

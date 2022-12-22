@@ -1,0 +1,28 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  {% if not passwords_match %}
+      <p>Password don't match</p>
+  {% endif %}
+
+  <form method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <td>Your email</td>
+        <td>{{ form.email }}</td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td>{{ form.password }}</td>
+      </tr>
+      <tr>
+        <td>Confirm password</td>
+        <td>{{ form.confirm_password }}</td>
+      </tr>
+    </table>
+    <input type="submit" value="Sign Up">
+    <input type="hidden" name="next" value="{{ next }}">
+  </form>
+
+{% endblock %}

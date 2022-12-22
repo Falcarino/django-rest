@@ -11,7 +11,8 @@ class HomeView(LoginRequiredMixin, APIView):
     def get(self, request):
         request.session.flush()  # TODO: delete when a logout function is implemented
         user = request.user
+
         context = {
-            'email': user
+            'email': user,
         }
         return render(request, 'home.html', context=context)
