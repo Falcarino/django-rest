@@ -1,14 +1,31 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
-{% block sidebar %}
-
-
-
+{% block head %}
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 {% endblock %}
 
 {% block content %}
 
-    <p>Congrats <i>{{ email }}</i>, you're in!</p>
-    <strong><p>However, your session has already been expired</p></strong>
+<body>
 
+    <header>
+        <ul>
+            <li><a class="active" href="#home">Home</a></li>
+            <li><a href="#">Users</a></li>
+            <li><a href="#">Your Products</a></li>
+            <li><button class="logout"><a href="{% url 'logout' %}">Log Out</a></button></li>
+        </ul>
+    </header>
+
+    <div class="divider"></div>
+    <div class="greeting">
+        <h1>Welcome, {{ email }}!</h1>
+        <h4>Successfully logged in</h4>
+    </div>
+</body>
+
+</html>
 {% endblock %}
+

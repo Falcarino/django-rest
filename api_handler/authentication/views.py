@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from authentication.forms import SignInForm, SignUpForm
 from users.models import User
 
+
 class SignInView(APIView):
 
     def get(self, request):
@@ -30,6 +31,13 @@ class SignInView(APIView):
                 return HttpResponse('Unauthorized', status=401)
         else:
             return HttpResponse('Unauthorized', status=401)
+
+
+class LogoutView(APIView):
+
+    def get(self, request):
+        request.session.flush()
+        return redirect('login')
 
 
 class SignUpView(APIView):

@@ -1,0 +1,65 @@
+html {
+    height: 100%;
+}
+
+header {
+    padding-top: 0;
+    height: 52px;
+    background: radial-gradient(#000000 10%, #101010);
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+  padding-left: 2vw;
+}
+
+li a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #151515;
+}
+
+.active {
+  background-color: #333;
+}
+
+.logout {
+    float: right
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    border: none;
+}
+
+body {
+    height: 100%;
+    background: linear-gradient(#000000, #280028);
+    background-size: cover;
+}
+
+.divider {
+    padding: 8px;
+    height: 20vh;
+}
+
+.greeting {
+    text-align: center;
+    color: #ddd;
+}

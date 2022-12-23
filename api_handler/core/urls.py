@@ -9,6 +9,6 @@ urlpatterns = [
     path('api/users/', include('users.urls')),
     path('api/products/', include('products.urls')),
     path('', lambda request: redirect('home/', permanent=False)),
-    path('login/', include('authentication.urls')),
+    path('auth/', include('authentication.urls')),
     path('home/', include('home.urls'))
 ]
