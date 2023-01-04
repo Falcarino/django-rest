@@ -5,7 +5,7 @@ html {
 header {
     padding-top: 0;
     height: 52px;
-    background: radial-gradient(#000000 10%, #101010);
+    background-color: #101010
 }
 
 ul {
@@ -50,7 +50,7 @@ li a:hover:not(.active) {
 
 body {
     height: 100%;
-    background: linear-gradient(#000000, #280028);
+    background: linear-gradient(#101024, #330066);
     background-size: cover;
 }
 
@@ -62,4 +62,3 @@ body {
 .greeting {
     text-align: center;
     color: #ddd;
-}

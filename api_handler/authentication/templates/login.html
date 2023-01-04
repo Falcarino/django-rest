@@ -1,35 +1,38 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
-<html lang="en">
-
-{% block content %}
-
-  {% if next %}
-    {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-      please log in with an account that has access.</p>
-    {% else %}
-      <p>Please login to see this page.</p>
-    {% endif %}
-  {% endif %}
-
-  <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <table>
-      <tr>
-        <td>{{ form.email.label_tag }}</td>
-        <td>{{ form.email }}</td>
-      </tr>
-      <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-      </tr>
-    </table>
-    <input type="submit" value="log in">
-    <input type="hidden" name="next" value="{{ next }}">
-  </form>
-  <p>If you don't have a user account <a href="{% url 'register' %}">click here</a> to register</p>
-
+{% block head %}
+    <title>Log In</title>
+    <!-- ?{% now 'U' %} is important, avoids .css not updating on the page load
+         https://www.wkoorts.com/2009/07/12/css-auto-reload-with-django-templates/ -->
+    <link rel="stylesheet" href="{% static 'auth_style.css' %}?{% now 'U' %}"/>
 {% endblock %}
 
-</html>
+{% block content %}
+<body><div class="center-screen">
+  <form class="login-form" method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+
+    <div class="center">
+
+        <table class="login-field">
+          <tr><td>{{ form.email.label_tag }}</td></tr>
+          <tr><td>{{ form.email }}</td></tr>
+        </table>
+
+        <table class="login-field">
+          <tr><td>{{ form.password.label_tag }}</td></tr>
+          <tr><td>{{ form.password }}</td></tr>
+        </table>
+
+    </div>
+
+    <input type="submit" value="Log in">
+
+    <div class="divider">
+    <p class="info-message">If you don't have a user account <a href="{% url 'register' %}">click here</a> to register</p>
+    </div>
+
+  </form>
+</div></body>
+{% endblock %}
