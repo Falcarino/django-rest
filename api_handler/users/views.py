@@ -1,5 +1,7 @@
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
@@ -92,3 +94,16 @@ class UsersView(APIView):
         serializer = UserSerializer(users, many=True)
         users.delete()
         return JsonResponse(serializer.data, safe=False, status=200)
+
+
+class UsersWebView(LoginRequiredMixin, APIView):
+    login_url = 'login'
+    redirect_field_name = 'redirect_to'
+
+    def get(self, request):
+        user = request.user
+        context = {
+            'email': user,
+        }
+
+        return render(request, 'users.html', context=context)

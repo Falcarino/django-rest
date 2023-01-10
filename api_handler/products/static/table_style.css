@@ -1,0 +1,18 @@
+@import 'home_style.css';
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #000;
+    color: white;
+}
+
+td, th {
+    text-align: left;
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+tr:nth-child(odd){
+    background-color: rgba(80,80,80,.4);
+}

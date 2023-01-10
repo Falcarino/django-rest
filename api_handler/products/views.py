@@ -1,5 +1,7 @@
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
@@ -98,3 +100,18 @@ class UserProductsView(APIView):
             products = Product.objects.filter(user_id=user_id)
             serializer = ProductSerializer(products, many=True)
             return JsonResponse(serializer.data, safe=False, status=200)
+
+
+class ProductsWebView(LoginRequiredMixin, APIView):
+    login_url = 'login'
+    redirect_field_name = 'redirect_to'
+
+    def get(self, request):
+        user_id = request.user.user_id
+        user_products = Product.objects.filter(user_id=user_id)
+
+        context = {
+            'products': user_products,
+        }
+
+        return render(request, 'products.html', context=context)

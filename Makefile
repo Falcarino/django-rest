@@ -15,4 +15,4 @@ restart:
 logs:
 	docker-compose --env-file .env.dev -f docker-compose.yml logs --tail=100 -f $(c)
 test:
-	DJANGO_SU_EMAIL=pirojgok@gmail.com DJANGO_SU_PASSWORD=adminadmin123 pytest ./api_handler/tests
+	DJANGO_SU_EMAIL=pirojgok@gmail.com DJANGO_SU_PASSWORD=adminadmin123 pytest -vv ./api_handler/tests

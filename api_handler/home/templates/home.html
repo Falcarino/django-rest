@@ -3,7 +3,7 @@
 
 {% block head %}
     <title>Home</title>
-    <link rel="stylesheet" href="{% static 'home_style.css' %}">
+    <link rel="stylesheet" href="{% static 'home_style.css' %}?{% now 'U' %}">
 {% endblock %}
 
 {% block content %}
@@ -12,15 +12,15 @@
 
     <header>
         <ul>
-            <li><a class="active" href="#home">Home</a></li>
-            <li><a href="#">Users</a></li>
-            <li><a href="#">Your Products</a></li>
+            <li><a class="active" href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'users_web' %}">Users</a></li>
+            <li><a href="{% url 'products_web' %}">Your Products</a></li>
             <li><button class="logout"><a href="{% url 'logout' %}">Log Out</a></button></li>
         </ul>
     </header>
 
     <div class="divider"></div>
-    <div class="greeting">
+    <div class="center">
         <h1>Welcome, {{ email }}!</h1>
         <h4>Successfully logged in</h4>
     </div>

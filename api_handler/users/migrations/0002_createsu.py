@@ -9,6 +9,8 @@ class Migration(migrations.Migration):
 
     def generate_superuser(apps, schema_editor):
         from users.models import User
+        from products.models import Product
+        from tests.factories import ProductFactory
 
         DJANGO_SU_EMAIL = os.environ.get('DJANGO_SU_EMAIL', 'lkjfsdg@gmail.com')
         DJANGO_SU_PASSWORD = os.environ.get('DJANGO_SU_PASSWORD', '12345apcfd')
@@ -19,6 +21,9 @@ class Migration(migrations.Migration):
         )
 
         superuser.save()
+
+        for _ in range(3):
+            ProductFactory.create(user_id=superuser)
 
     operations = [
         migrations.RunPython(generate_superuser),

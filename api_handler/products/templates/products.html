@@ -1,0 +1,43 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block head %}
+    <title>Your Products</title>
+    <!-- ?{% now 'U' %} is important, avoids .css not updating on the page load
+         https://www.wkoorts.com/2009/07/12/css-auto-reload-with-django-templates/ -->
+    <link rel="stylesheet" href="{% static 'table_style.css' %}?{% now 'U' %}"/>
+{% endblock %}
+
+
+{% block content %}
+
+<body>
+
+    <header>
+            <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'users_web' %}">Users</a></li>
+            <li><a class="active" href="{% url 'products_web' %}">Your Products</a></li>
+            <li><button class="logout"><a href="{% url 'logout' %}">Log Out</a></button></li>
+        </ul>
+    </header>
+
+    <div class="divider"></div>
+    <table class="center">
+        <tr>
+            <th>Type</th>
+            <th>Brand</th>
+            <th>Model</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.product_type }}</td>
+            <td>{{ product.brand }}</td>
+            <td>{{ product.model }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+
+{% endblock %}
