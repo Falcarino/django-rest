@@ -1,33 +1,39 @@
 import json
-
-import factory
-import pytest
 from django.urls import reverse
 from rest_framework.test import APITestCase
-
 from .factories import ProductFactory, UserFactory
 
 # Automatically assigns @pytest.mark.django_db to every function
 # But apparently the suite will work without it???
 # pytestmark = pytest.mark.django_db
 
+INITIAL_USERS = 1
+INITIAL_PRODUCTS = 3
+TEST_PRODUCTS = 4
 
 class TestUsersAPI(APITestCase):
+
     # Objects created in setUp function will persist throughout the test class
+    # IMPORTANT: there's a preset user created in users/migrations with 2 products
+    # It is reflected in the total_setup_users and total_setup_products variables
     def setUp(self):
+
         users = UserFactory.create_batch(3)
-        for i in range(4):
+        for i in range(TEST_PRODUCTS):
             ProductFactory.create(user_id=users[i % 3])
 
-    # Test GET to get all products. Pre-set amount of products is 4
+        self.total_setup_users = len(users) + INITIAL_USERS
+        self.total_setup_products = TEST_PRODUCTS + INITIAL_PRODUCTS
+
+    # Test GET to get all products.
     def test_products_get_all(self):
         url = reverse('all_products')
         response = self.client.get(url)
         content = json.loads(response.content)
 
         assert response.status_code == 200
-        assert len(content) == 4
-        assert [2, 3, 4, 2] == [product_info['user_id'] for product_info in content]
+        assert len(content) == self.total_setup_products
+        assert [1, 1, 1, 2, 3, 4, 2] == [product_info['user_id'] for product_info in content]
 
     # Test GET to get one or several products.
     def test_products_get_several(self):
@@ -105,7 +111,7 @@ class TestUsersAPI(APITestCase):
         url = reverse('all_products')
         response = self.client.get(url)
         amount_of_products = len(json.loads(response.content))
-        assert amount_of_products == 2
+        assert amount_of_products == self.total_setup_products - 2
 
     # Test DELETE on all products. GETting all users should return an empty array.
     def test_products_delete_all(self):
