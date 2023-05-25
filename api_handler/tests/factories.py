@@ -1,7 +1,6 @@
 import factory
-
+from django.contrib.auth import get_user_model
 from products.models import Product
-from users.models import User
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -11,11 +10,11 @@ class UserFactory(factory.django.DjangoModelFactory):
     List of available topics can be found here:
     https://faker.readthedocs.io/en/master/providers.html
     """
-    email = factory.faker.Faker('email')
-    password = factory.faker.Faker('password')
-
     class Meta:
-        model = User
+        model = get_user_model()
+
+    email = factory.faker.Faker('email')
+    password = factory.PostGenerationMethodCall('set_password', '12345')
 
 
 class ProductFactory(factory.django.DjangoModelFactory):
@@ -25,9 +24,10 @@ class ProductFactory(factory.django.DjangoModelFactory):
     List of available topics can be found here:
     https://faker.readthedocs.io/en/master/providers.html
     """
+    class Meta:
+        model = Product
+
     product_type = factory.faker.Faker('word')
     brand = factory.faker.Faker('word')
     model = factory.faker.Faker('license_plate')
 
-    class Meta:
-        model = Product

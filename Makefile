@@ -7,6 +7,7 @@ start:
 	docker compose --env-file .env.dev -f docker-compose.yml start $(c)
 down:
 	docker compose --env-file .env.dev -f docker-compose.yml down $(c)
+	docker volume rm django-rest_pg-data $(c)
 stop:
 	docker compose --env-file .env.dev -f docker-compose.yml stop $(c)
 restart:

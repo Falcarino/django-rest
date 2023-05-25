@@ -30,7 +30,7 @@ class SignInView(APIView):
             else:
                 return HttpResponse('Unauthorized', status=401)
         else:
-            return HttpResponse('Unauthorized', status=401)
+            return HttpResponse('Invalid Form', status=401)
 
 
 class LogoutView(APIView):
@@ -60,7 +60,7 @@ class SignUpView(APIView):
 
             passwords_match = password == confirm_password
             if passwords_match:
-                new_user = User.objects.create_superuser(email=email, password=password)
+                new_user = User.objects.create_user(email=email, password=password)
                 new_user.save()
 
                 return redirect('login')
