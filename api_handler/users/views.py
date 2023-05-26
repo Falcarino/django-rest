@@ -106,4 +106,7 @@ class UsersWebView(LoginRequiredMixin, APIView):
             'email': user,
         }
 
-        return render(request, 'users.html', context=context)
+        if user.is_superuser:
+            return render(request, 'users.html', context=context)
+        else:
+            return render(request, 'access_denied.html')
