@@ -1,0 +1,34 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block head %}
+    <title>Log In</title>
+    <!-- ?{% now 'U' %} is important, avoids .css not updating on the page load
+         https://www.wkoorts.com/2009/07/12/css-auto-reload-with-django-templates/ -->
+    <link rel="stylesheet" href="{% static 'auth_style.css' %}?{% now 'U' %}"/>
+{% endblock %}
+
+{% block content %}
+<body><div class="center-screen">
+  <form class="login-form" method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+
+    <table class="center login-field">
+      <tr><td>{{ form.email.label_tag }}</td></tr>
+      <tr><td>{{ form.email }}</td></tr>
+    </table>
+
+    <table class="center login-field">
+      <tr><td>{{ form.password.label_tag }}</td></tr>
+      <tr><td>{{ form.password }}</td></tr>
+    </table>
+
+    <input type="submit" value="Log in">
+
+    <div class="divider">
+    <p class="info-message">If you don't have a user account <a href="{% url 'register' %}">click here</a> to register</p>
+    </div>
+
+  </form>
+</div></body>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block head %}
+    <title>Register</title>
+    <!-- ?{% now 'U' %} is important, avoids .css not updating on the page load
+         https://www.wkoorts.com/2009/07/12/css-auto-reload-with-django-templates/ -->
+    <link rel="stylesheet" href="{% static 'auth_style.css' %}?{% now 'U' %}"/>
+{% endblock %}
+
+
+{% block content %}
+
+<body><div class="center-screen">
+  <form class="login-form" method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+  <div class="center">
+    <table class="login-field">
+      <tr><td>Your email</td></tr>
+      <tr><td>{{ form.email }}</td></tr>
+    </table>
+
+    <table class="login-field">
+      <tr><td>Your password</td></tr>
+      <tr><td>{{ form.password }}</td></tr>
+    </table>
+
+    <table class="login-field">
+      <tr><td>Confirm password</td></tr>
+      <tr><td>{{ form.confirm_password }}</td></tr>
+    </table>
+  </div>
+
+    <input type="submit" value="Sign Up">
+    <input type="hidden" name="next" value="{{ next }}">
+
+  </form>
+  {% if not passwords_match %}
+    <div class="center"><p class="error-message">Passwords don't match</p></div>
+  {% endif %}
+</div></body>
+{% endblock %}

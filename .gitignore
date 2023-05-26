@@ -1,0 +1,8 @@
+.idea
+*.pyc
+db.sqlite3
+env
+venv
+talking-python-api-flowchart.drawio
+/api_handler/fixtures
+/api_handler/.pytest_cache

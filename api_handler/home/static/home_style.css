@@ -1,0 +1,67 @@
+html {
+    height: 100%;
+}
+
+header {
+    padding-top: 0;
+    height: 52px;
+    background-color: #101010
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+  padding-left: 2vw;
+}
+
+li a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #151515;
+}
+
+body {
+    height: 100%;
+    background: linear-gradient(#101024, #330066);
+    background-size: cover;
+}
+
+.active {
+  background-color: #333;
+}
+
+.logout {
+    float: right
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: transparent;
+    outline: none;
+    border: none;
+}
+
+.divider {
+    padding: 8px;
+    height: 20vh;
+}
+
+.center {
+    text-align: center;
+    margin: auto;
+    color: #ddd;
+    align-items: center;
+}
